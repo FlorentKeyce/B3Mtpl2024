@@ -1,0 +1,11 @@
+---
+
+- name: Playbook initial
+  hosts: all
+  tasks:
+    - name: Afficher les facts
+      debug:
+        var: ansible_facts
+    - name: Vérifier la connectivité
+      ping:
+
