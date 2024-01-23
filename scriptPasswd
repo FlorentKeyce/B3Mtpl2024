@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Chemin du fichier YAML de sortie
+output_file="users.yaml"
+
+# Vérifier si le fichier /etc/passwd existe
+if [ ! -e "/etc/passwd" ]; then
+    echo "Erreur : Le fichier /etc/passwd n'existe pas."
+    exit 1
+fi
+
+# Écrire l'en-tête YAML dans le fichier de sortie
+echo "users:" > "$output_file"
+
+# Boucle à travers les lignes du fichier /etc/passwd
+while IFS=: read -r user passwd uid gid desc home shell; do
+    # Ignorer les lignes commentées ou vides
+    if [[ ! $user =~ ^# ]] && [[ -n $user ]]; then
+        # Écrire les informations de l'utilisateur dans le fichier YAML
+        echo "  - username: $user" >> "$output_file"
+        echo "    uid: $uid" >> "$output_file"
+        echo "    gid: $gid" >> "$output_file"
+        echo "    description: $desc" >> "$output_file"
+        echo "    home: $home" >> "$output_file"
+        echo "    shell: $shell" >> "$output_file"
+        echo "" >> "$output_file"
+    fi
+done < "/etc/passwd"
+
+echo "Les informations ont été stockées dans le fichier $output_file."
