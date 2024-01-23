@@ -6,17 +6,35 @@
     - name: Afficher les facts
       debug:
         var: ansible_facts
+
     - name: Vérifier la connectivité
       ping:
+
     - name: Déployer la clé publique
       authorized_key:
         user: openit
         state: present
         key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+
     - name: Résolution DNS du hostname
       lineinfile:
         path: /etc/hosts
         line: "127.0.1.1  {{ inventory_hostname }}"
+
     - name: Mise à jour du hostname
       hostname:
         name: "{{ inventory_hostname }}"
+
+- name: Playbook web
+  hosts: web
+  tasks:
+    - name: Installer un serveur web
+      package:
+        name: nginx
+        state: present
+
+    - name: Vérifier le démarrage du serveur web
+      service:
+        name: nginx
+        state: started
+        enabled: yes
