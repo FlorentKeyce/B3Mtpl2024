@@ -1,0 +1,8 @@
+[web]
+b3linux-infra1 ansible_host=192.168.56.104
+
+[php]
+b3linux-infra2 ansible_host=192.168.56.105
+
+[db]
+b3linux-infra3 ansible_host=192.168.56.106
