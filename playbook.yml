@@ -13,3 +13,10 @@
         user: openit
         state: present
         key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+    - name: Résolution DNS du hostname
+      lineinfile:
+        path: /etc/hosts
+        line: "127.0.1.1  {{ inventory_hostname }}"
+    - name: Mise à jour du hostname
+      hostname:
+        name: "{{ inventory_hostname }}"
