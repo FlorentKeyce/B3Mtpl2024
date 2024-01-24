@@ -9,6 +9,12 @@
   #     state: present
   #     key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
 
+  - name: Mise à jour du serveur DNS
+    lineinfile:
+      path: /etc/resolv.conf
+      regexp: ^nameserver
+      line: nameserver 1.1.1.1
+
   - name: Résolution DNS du hostname
     lineinfile:
       path: /etc/hosts
