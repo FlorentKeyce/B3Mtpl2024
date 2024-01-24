@@ -1,0 +1,14 @@
+---
+- name: Playbook web
+  hosts: web
+  tasks:
+    - name: Installer un serveur web
+      package:
+        name: nginx
+        state: present
+
+    - name: Vérifier le démarrage du serveur web
+      service:
+        name: nginx
+        state: started
+        enabled: yes

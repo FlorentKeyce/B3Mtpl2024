@@ -1,0 +1,9 @@
+---
+
+- name: Playbook PHP
+  hosts: php
+  tasks:
+  - name: Installer PHP-FPM
+    package:
+      name: php-fpm
+      state: latest

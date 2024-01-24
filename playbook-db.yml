@@ -1,0 +1,9 @@
+---
+
+- name: Playbook DB
+  hosts: db
+  tasks:
+  - name: Installer le SGBD
+    package:
+      name: "{{ db_server }}"
+      state: latest
