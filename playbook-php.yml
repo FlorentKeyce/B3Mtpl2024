@@ -7,3 +7,14 @@
     package:
       name: php-fpm
       state: latest
+
+  - name: Envoi de la configuration php
+    template: 
+      src: files/fpm.conf
+      dest: /etc/php/8.2/fpm/pool.d/www.conf
+
+  - name: Redémarrer php
+    service:
+      name: php8.2-fpm
+      state: restarted
+    
