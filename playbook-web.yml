@@ -26,7 +26,7 @@
         creates: /var/www/html/wordpress
 
     - name: Envoi de la configuration nginx
-      copy: 
+      template: 
         src: files/nginx-wp.conf
         dest: /etc/nginx/sites-available/wordpress
     
