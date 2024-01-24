@@ -12,3 +12,14 @@
         name: nginx
         state: started
         enabled: yes
+
+    - name: Télécharger Wordpress
+      get_url:
+        url: https://wordpress.org/latest.tar.gz
+        dest: /var/www/html/wp.tar.gz
+
+    - name: Désarchive Wordpress
+      unarchive:
+        src: /var/www/html/wp.tar.gz
+        dest: /var/www/html/
+        remote_src: yes
