@@ -3,27 +3,26 @@
 - name: Playbook initial
   hosts: all
   tasks:
-    - name: Afficher les facts
-      debug:
-        var: ansible_facts
+  # - name: Déployer la clé publique
+  #   authorized_key:
+  #     user: openit
+  #     state: present
+  #     key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
 
-    - name: Vérifier la connectivité
-      ping:
+  - name: Résolution DNS du hostname
+    lineinfile:
+      path: /etc/hosts
+      line: "127.0.1.1  {{ inventory_hostname }}"
 
-    - name: Déployer la clé publique
-      authorized_key:
-        user: openit
-        state: present
-        key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+  - name: Mise à jour du hostname
+    hostname:
+      name: "{{ inventory_hostname }}"
 
-    - name: Résolution DNS du hostname
-      lineinfile:
-        path: /etc/hosts
-        line: "127.0.1.1  {{ inventory_hostname }}"
-
-    - name: Mise à jour du hostname
-      hostname:
-        name: "{{ inventory_hostname }}"
+  - name: Mettre à jour le système
+    apt:
+      update_cache: true
+      name: "*"
+      state: latest
 
 - name: Playbook web
   hosts: web
