@@ -9,10 +9,10 @@
       state: latest
 
   - name: Vérifier le démarrage de php
-      service:
-        name: php8.2-fpm
-        state: started
-        enabled: yes
+    service:
+      name: php8.2-fpm
+      state: started
+      enabled: yes
 
   - name: Envoi de la configuration php
     template: 
