@@ -5,7 +5,10 @@ ansible -m authorized_key -a "user=openit state=present key={{ lookup('file', '~
 
 Les playbooks s'éxécutent ainsi :
 
-ansible-playbook -k playbook-init.yml 
+ansible-playbook -k playbook-init.yml
+
 ansible-playbook playbook-web.yml
+
 ansible-playbook playbook-php.yml
+
 ansible-playbook playbook-db.yml
