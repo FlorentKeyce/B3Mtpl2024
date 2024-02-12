@@ -3,5 +3,9 @@
 Avant la première exécution, déployer la clé publique :
 ansible -m authorized_key -a "user=openit state=present key={{ lookup('file', '~/.ssh/id_ed25519.pub') }}" --ask-pass all
 
-Le playbook s'exécute ainsi :
-ansible-playbook playbook.yml
+Les playbooks s'éxécutent ainsi :
+
+ansible-playbook -k playbook-init.yml 
+ansible-playbook playbook-web.yml
+ansible-playbook playbook-php.yml
+ansible-playbook playbook-db.yml

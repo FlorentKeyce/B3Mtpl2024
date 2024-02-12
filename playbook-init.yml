@@ -3,12 +3,12 @@
 - name: Playbook initial
   hosts: all
   tasks:
-  # - name: Déployer la clé publique
-  #   authorized_key:
-  #     user: openit
-  #     state: present
-  #     key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
-
+  - name: Déployer la clé publique
+    authorized_key:
+      user: openit
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+  
   - name: Mise à jour du serveur DNS
     lineinfile:
       path: /etc/resolv.conf
