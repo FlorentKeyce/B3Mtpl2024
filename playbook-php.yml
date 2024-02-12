@@ -42,3 +42,4 @@
       path: /var/www/html/wordpress
       src: "{{ hostvars[groups['web'][0]]['ansible_host'] }}:/var/www/html/wordpress"
       state: mounted
+      opts: defaults
