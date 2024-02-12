@@ -2,3 +2,6 @@
 
 #db_server: mysql-server
 db_server: mariadb-server
+db_database: wordpress_db
+db_user: wordpress_user
+db_password: wordpress_password

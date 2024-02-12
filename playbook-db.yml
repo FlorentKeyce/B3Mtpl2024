@@ -5,5 +5,22 @@
   tasks:
   - name: Installer le SGBD
     package:
-      name: "{{ db_server }}"
+      name:
+      - "{{ db_server }}"
+      - python3-pymysql
       state: latest
+
+  - name: Créer la bdd
+    mysql_db:
+      name: "{{ db_database }}"
+      state: present
+      login_unix_socket: /run/mysqld/mysqld.sock
+  
+  - name: Créer l'utilisateur
+    mysql_user:
+      name: "{{ db_user }}"
+      password: "{{ db_password }}"
+      host: '%'
+      state: present
+      priv: "{{ db_database }}.*:ALL"
+      login_unix_socket: /run/mysqld/mysqld.sock
