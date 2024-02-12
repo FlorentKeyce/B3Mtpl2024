@@ -49,3 +49,20 @@
         name: nginx
         state: restarted
       when: nginx_conf.changed or nginx_default_conf.changed or nginx_wp_conf.changed
+
+    - name: Installer le serveur NFS
+      package:
+        name: nfs-kernel-server
+        state: latest
+    
+    - name: Configurer le partage nfs
+      lineinfile:
+        path: /etc/exports
+        regexp: ^/var/www/html/wordpress 
+        line: "/var/www/html/wordpress {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,no_root_squash,all_squash,fsid=0)"
+        state: present
+      register: nfs_exports
+
+    - name: Recharger les partages NFS
+      command: exportfs -a
+      when: nfs_exports.changed
