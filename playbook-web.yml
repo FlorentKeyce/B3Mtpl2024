@@ -29,19 +29,23 @@
       template: 
         src: files/nginx-wp.conf
         dest: /etc/nginx/sites-available/wordpress
+      register: nginx_conf
     
     - name: Désactivation du site par defaut
       file:
         path: /etc/nginx/sites-enabled/default
         state: absent
+      register: nginx_default_conf
     
     - name: Activation le site Wordpress
       file:
         src: /etc/nginx/sites-available/wordpress
         dest: /etc/nginx/sites-enabled/wordpress
         state: link
+      register: nginx_wp_conf
 
     - name: Redémarrer nginx
       service:
         name: nginx
         state: restarted
+      when: nginx_conf.changed or nginx_default_conf.changed or nginx_wp_conf.changed

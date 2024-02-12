@@ -8,13 +8,21 @@
       name: php-fpm
       state: latest
 
+  - name: Vérifier le démarrage de php
+      service:
+        name: php8.2-fpm
+        state: started
+        enabled: yes
+
   - name: Envoi de la configuration php
     template: 
       src: files/fpm.conf
       dest: /etc/php/8.2/fpm/pool.d/www.conf
+    register: php_conf
 
   - name: Redémarrer php
     service:
       name: php8.2-fpm
       state: restarted
+    when: php_conf.changed
     
