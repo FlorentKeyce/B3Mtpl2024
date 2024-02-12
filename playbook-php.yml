@@ -5,7 +5,9 @@
   tasks:
   - name: Installer PHP-FPM
     package:
-      name: php-fpm
+      name:
+      - php-fpm
+      - php-mysql
       state: latest
 
   - name: Vérifier le démarrage de php
