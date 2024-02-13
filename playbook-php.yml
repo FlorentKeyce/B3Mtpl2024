@@ -6,25 +6,25 @@
   - name: Installer PHP-FPM
     package:
       name:
-      - php-fpm
+      - "php{{ php_version }}-fpm"
       - php-mysql
       state: latest
 
   - name: Vérifier le démarrage de php
     service:
-      name: php8.2-fpm
+      name: "php{{ php_version }}-fpm"
       state: started
       enabled: yes
 
   - name: Envoi de la configuration php
     template: 
       src: files/fpm.conf
-      dest: /etc/php/8.2/fpm/pool.d/www.conf
+      dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
     register: php_conf
 
   - name: Redémarrer php
     service:
-      name: php8.2-fpm
+      name: "php{{ php_version }}-fpm"
       state: restarted
     when: php_conf.changed
     
@@ -44,17 +44,17 @@
       path: /var/www/html/wordpress
       src: "{{ hostvars[groups['web'][0]]['ansible_host'] }}:/var/www/html/wordpress"
       state: mounted
-      opts: _netdev,x-systemd.after=php8.2-fpm.service
+      opts: "_netdev,x-systemd.after=php{{ php_version }}-fpm.service"
   
   - name: Reconfiguer les services (1)
     file:
-      path: /etc/systemd/system/php8.2-fpm.service.d/
+      path: "/etc/systemd/system/php{{ php_version }}-fpm.service.d/"
       state: directory
   
   - name: Reconfiguer les services (2)
     template:
       src: files/prestart.conf
-      dest: /etc/systemd/system/php8.2-fpm.service.d/prestart.conf
+      dest: "/etc/systemd/system/php{{ php_version }}-fpm.service.d/prestart.conf"
     register: prestart_conf
 
   - name: recharger systemctl
