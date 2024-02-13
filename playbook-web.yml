@@ -21,13 +21,13 @@
     - name: Désarchive Wordpress
       unarchive:
         src: https://wordpress.org/latest.tar.gz
-        dest: /var/www/html/
+        dest: "{{ wordpress_path | dirname | dirname }}"
         remote_src: yes
-        creates: /var/www/html/wordpress
+        creates: "{{ wordpress_path }}"
 
     - name: Changement des permissions
       file:
-        path: /var/www/html/wordpress
+        path: "{{ wordpress_path }}"
         recurse: true
         owner: www-data
         group: www-data
@@ -65,8 +65,8 @@
     - name: Configurer le partage nfs
       lineinfile:
         path: /etc/exports
-        regexp: ^/var/www/html/wordpress 
-        line: "/var/www/html/wordpress {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,fsid=0)"
+        regexp: "^{{ wordpress_path }} "
+        line: "{{ wordpress_path }} {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,fsid=0)"
         state: present
       register: nfs_exports
 
