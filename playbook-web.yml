@@ -6,6 +6,8 @@
       service:
         name: nginx
         state: restarted
+    - name: Recharger les partages NFS
+      command: exportfs -a
   tasks:
     - name: Désinstaller Apache
       package:
@@ -67,8 +69,4 @@
         regexp: "^{{ wordpress_path }} "
         line: "{{ wordpress_path }} {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,fsid=0)"
         state: present
-      register: nfs_exports
-
-    - name: Recharger les partages NFS
-      command: exportfs -a
-      when: nfs_exports.changed
+      notify: Recharger les partages NFS
