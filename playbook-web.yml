@@ -25,16 +25,20 @@
         state: started
         enabled: yes
 
+    - name: Test
+      debug:
+        msg: "{{ wordpress_path | realpath | dirname }}"
+
     - name: Désarchive Wordpress
       unarchive:
         src: https://wordpress.org/latest.tar.gz
-        dest: "{{ wordpress_path | dirname | dirname }}"
+        dest: "{{ wordpress_path | realpath | dirname }}"
         remote_src: yes
-        creates: "{{ wordpress_path }}"
+        creates: "{{ wordpress_path | realpath }}"
 
     - name: Changement des permissions
       file:
-        path: "{{ wordpress_path }}"
+        path: "{{ wordpress_path | realpath }}"
         recurse: true
         owner: www-data
         group: www-data
@@ -66,7 +70,7 @@
     - name: Configurer le partage nfs
       lineinfile:
         path: /etc/exports
-        regexp: "^{{ wordpress_path }} "
-        line: "{{ wordpress_path }} {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,fsid=0)"
+        regexp: "^{{ wordpress_path | realpath }} "
+        line: "{{ wordpress_path | realpath }} {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,fsid=0)"
         state: present
       notify: Recharger les partages NFS
