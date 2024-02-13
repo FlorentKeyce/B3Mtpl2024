@@ -2,36 +2,5 @@
 
 - name: Playbook DB
   hosts: db
-  handlers:
-  - name: Redémarrer mariadb
-    service:
-      name: mariadb
-      state: restarted
-  tasks:
-  - name: Installer le SGBD
-    package:
-      name:
-      - "{{ db_server }}"
-      - python3-pymysql
-      state: latest
-
-  - name: Créer la bdd
-    mysql_db:
-      name: "{{ db_database }}"
-      state: present
-      login_unix_socket: /run/mysqld/mysqld.sock
-  
-  - name: Créer l'utilisateur
-    mysql_user:
-      name: "{{ db_user }}"
-      password: "{{ db_password }}"
-      host: '%'
-      state: present
-      priv: "{{ db_database }}.*:ALL"
-      login_unix_socket: /run/mysqld/mysqld.sock
-
-  - name: Reconfigurer mariadb
-    template:
-      src: files/mariadb.cnf
-      dest: /etc/mysql/mariadb.conf.d/51-bindaddress.cnf
-    notify: Redémarrer mariadb
+  roles:
+  - mariadb

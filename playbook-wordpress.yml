@@ -1,0 +1,23 @@
+---
+
+- name: Intitialisation
+  hosts: all
+  roles:
+  - init
+
+- name: Serveur web
+  hosts: web
+  roles:
+  - nginx
+  - nfsserver
+
+- name: Interpreteur PHP
+  hosts: php
+  roles:
+  - php-fpm
+  - nfsclient
+
+- name: Base de données
+  hosts: db
+  roles:
+  - mariadb
