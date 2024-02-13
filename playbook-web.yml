@@ -25,6 +25,13 @@
         remote_src: yes
         creates: /var/www/html/wordpress
 
+    - name: Changement des permissions
+      file:
+        path: /var/www/html/wordpress
+        recurse: true
+        owner: www-data
+        group: www-data
+
     - name: Envoi de la configuration nginx
       template: 
         src: files/nginx-wp.conf
@@ -59,17 +66,10 @@
       lineinfile:
         path: /etc/exports
         regexp: ^/var/www/html/wordpress 
-        line: "/var/www/html/wordpress {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,no_root_squash,all_squash,fsid=0)"
+        line: "/var/www/html/wordpress {{ hostvars[groups['php'][0]]['ansible_host'] }}(rw,sync,no_subtree_check,fsid=0)"
         state: present
       register: nfs_exports
 
     - name: Recharger les partages NFS
       command: exportfs -a
       when: nfs_exports.changed
-    
-    - name: Changement des permissions
-      file:
-        path: /var/www/html/wordpress
-        recurse: true
-        owner: www-data
-        group: www-data

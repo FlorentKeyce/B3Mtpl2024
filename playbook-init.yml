@@ -3,18 +3,30 @@
 - name: Playbook initial
   hosts: all
   tasks:
-  - name: Déployer la clé publique
-    authorized_key:
-      user: openit
-      state: present
-      key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+  - name: Reconfigurer le réseau en statique
+    template:
+      src: files/interfaces
+      dest: /etc/network/interfaces
+      register: network_conf
   
+  - name: Redémarrer le réseau
+    service: 
+      name: networking
+      state: restarted
+    when: network_conf.changed
+
   - name: Mise à jour du serveur DNS
     lineinfile:
       path: /etc/resolv.conf
       regexp: ^nameserver
       line: nameserver 1.1.1.1
 
+  - name: Déployer la clé publique
+    authorized_key:
+      user: openit
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+  
   - name: Résolution DNS du hostname
     lineinfile:
       path: /etc/hosts

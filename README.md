@@ -12,3 +12,16 @@ ansible-playbook playbook-web.yml
 ansible-playbook playbook-php.yml
 
 ansible-playbook playbook-db.yml
+
+TODO mardi 13/02 :
+
+- debugger démarrage de php fpm (non local address binding) : résolu par configuration statique du réseau (temps de démarrage des cartes réseau acceleré)
+
+- vérifier les permissions /var/www/html/wordpress
+
+- nfs qui ne monte pas tout seul : résolu par configuration statique du réseau (temps de démarrage des cartes réseau acceleré
+
+- handlers
+
+- roles
+
