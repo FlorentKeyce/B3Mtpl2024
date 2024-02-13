@@ -7,7 +7,7 @@
     template:
       src: files/interfaces
       dest: /etc/network/interfaces
-      register: network_conf
+    register: network_conf
   
   - name: Redémarrer le réseau
     service: 

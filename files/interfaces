@@ -5,8 +5,6 @@
 auto lo
 iface lo inet loopback
 
-{% if ansible_interfaces|length > 2 %}
-
 {% for interface in ansible_interfaces if interface != 'lo' %}
 
 allow-hotplug {{ interface }}
@@ -17,4 +15,3 @@ iface {{ interface }} inet static
     gateway {{ ansible_default_ipv4.gateway }}
 {% endif %}
 {% endfor %}
-{% endif %}
