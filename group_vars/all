@@ -1,1 +1,2 @@
 wordpress_path: /var/www/html/wordpress
+php_port: 9000
