@@ -1,6 +1,11 @@
 ---
 - name: Playbook web
   hosts: web
+  handlers:
+    - name: Redémarrer nginx
+      service:
+        name: nginx
+        state: restarted
   tasks:
     - name: Désinstaller Apache
       package:
@@ -36,26 +41,20 @@
       template: 
         src: files/nginx-wp.conf
         dest: /etc/nginx/sites-available/wordpress
-      register: nginx_conf
+      notify: Redémarrer nginx
     
     - name: Désactivation du site par defaut
       file:
         path: /etc/nginx/sites-enabled/default
         state: absent
-      register: nginx_default_conf
+      notify: Redémarrer nginx
     
     - name: Activation le site Wordpress
       file:
         src: /etc/nginx/sites-available/wordpress
         dest: /etc/nginx/sites-enabled/wordpress
         state: link
-      register: nginx_wp_conf
-
-    - name: Redémarrer nginx
-      service:
-        name: nginx
-        state: restarted
-      when: nginx_conf.changed or nginx_default_conf.changed or nginx_wp_conf.changed
+      notify: Redémarrer nginx
 
     - name: Installer le serveur NFS
       package:
