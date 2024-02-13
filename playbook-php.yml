@@ -2,6 +2,14 @@
 
 - name: Playbook PHP
   hosts: php
+  handlers:
+  - name: recharger systemctl
+    systemd:
+      daemon_reload: true
+  - name: Redémarrer php
+    service:
+      name: "php{{ php_version }}-fpm"
+      state: restarted
   tasks:
   - name: Installer PHP-FPM
     package:
@@ -20,13 +28,7 @@
     template: 
       src: files/fpm.conf
       dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
-    register: php_conf
-
-  - name: Redémarrer php
-    service:
-      name: "php{{ php_version }}-fpm"
-      state: restarted
-    when: php_conf.changed
+    notify: Redémarrer php
     
   - name: Installer le client NFS
     package:
@@ -55,9 +57,4 @@
     template:
       src: files/prestart.conf
       dest: "/etc/systemd/system/php{{ php_version }}-fpm.service.d/prestart.conf"
-    register: prestart_conf
-
-  - name: recharger systemctl
-    systemd:
-      daemon_reload: true
-    when: prestart_conf.changed
+    notify: recharger systemctl
