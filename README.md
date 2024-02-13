@@ -25,3 +25,4 @@ TODO mardi 13/02 :
 
 - roles
 
+- variables

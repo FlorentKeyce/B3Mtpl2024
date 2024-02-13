@@ -48,13 +48,13 @@
   
   - name: Reconfiguer les services (1)
     file:
-      path: "/etc/systemd/system/php8.2-fpm.service.d/"
+      path: /etc/systemd/system/php8.2-fpm.service.d/
       state: directory
   
   - name: Reconfiguer les services (2)
     template:
       src: files/prestart.conf
-      dest: "/etc/systemd/system/php8.2-fpm.service.d/prestart.conf"
+      dest: /etc/systemd/system/php8.2-fpm.service.d/prestart.conf
     register: prestart_conf
 
   - name: recharger systemctl
