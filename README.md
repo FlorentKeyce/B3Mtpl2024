@@ -19,7 +19,7 @@ TODO mardi 13/02 :
 
 - vérifier les permissions /var/www/html/wordpress
 
-- nfs qui ne monte pas tout seul : résolu par configuration statique du réseau (temps de démarrage des cartes réseau acceleré
+- nfs qui ne monte pas tout seul : résolu en le montant appr-s le démarrage de php-fpm
 
 - handlers
 

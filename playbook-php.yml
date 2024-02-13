@@ -44,4 +44,20 @@
       path: /var/www/html/wordpress
       src: "{{ hostvars[groups['web'][0]]['ansible_host'] }}:/var/www/html/wordpress"
       state: mounted
-      opts: _netdev
+      opts: _netdev,x-systemd.after=php8.2-fpm.service
+  
+  - name: Reconfiguer les services (1)
+    file:
+      path: "/etc/systemd/system/php8.2-fpm.service.d/"
+      state: directory
+  
+  - name: Reconfiguer les services (2)
+    template:
+      src: files/prestart.conf
+      dest: "/etc/systemd/system/php8.2-fpm.service.d/prestart.conf"
+    register: prestart_conf
+
+  - name: recharger systemctl
+    systemd:
+      daemon_reload: true
+    when: prestart_conf.changed

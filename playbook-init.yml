@@ -3,17 +3,17 @@
 - name: Playbook initial
   hosts: all
   tasks:
-  - name: Reconfigurer le réseau en statique
-    template:
-      src: files/interfaces
-      dest: /etc/network/interfaces
-    register: network_conf
+  #- name: Reconfigurer le réseau en statique
+  #  template:
+  #    src: files/interfaces
+  #    dest: /etc/network/interfaces
+  #  register: network_conf
   
-  - name: Redémarrer le réseau
-    service: 
-      name: networking
-      state: restarted
-    when: network_conf.changed
+  #- name: Redémarrer le réseau
+  #  service: 
+  #    name: networking
+  #    state: restarted
+  #  when: network_conf.changed
 
   - name: Mise à jour du serveur DNS
     lineinfile:
